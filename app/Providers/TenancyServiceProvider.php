@@ -30,7 +30,7 @@ class TenancyServiceProvider extends ServiceProvider
                     Jobs\MigrateDatabase::class,
                     // Jobs\SeedDatabase::class,
            
-                 SeedTenatAdminJob::class,  // custom tenantJob
+                     SeedTenatAdminJob::class,  // custom tenantJob
                     // Your own jobs to prepare the tenant.
                     // Provision API keys, create S3 buckets, anything you want!
 

@@ -16,6 +16,7 @@ class TenancyRegisterController extends Controller
 {
 
 
+
     // From super admin manage
     public function tenancyRegister(Request $request)
     {
@@ -33,6 +34,76 @@ class TenancyRegisterController extends Controller
         return redirect()->back()->with("success", "Successfully Created Tenant With  Domain");
     }
 
+
+    // addBlog postBlog editBlog deleteBlog
+    public function addBlog(Request $request)
+    {
+        // Retrieve the tenant's database name
+        $tenantId = tenant('id');
+        $db_user = 'tenant' . $tenantId;
+
+        config(['database.connections.tenant.database' => $db_user]);
+        // Reconnect to the tenant's database
+        DB::connection('tenant')->reconnect();
+
+
+        if (DB::connection('tenant')->getPdo()) {
+
+            $basic = DB::connection('tenant')
+                ->table('users')
+                ->where('status', 'basic')
+                ->exists();
+
+            $standard = DB::connection('tenant')
+                ->table('users')
+                ->where('status', 'standard')
+                ->exists();
+
+
+            $premium = DB::connection('tenant')
+                ->table('users')
+                ->where('status', 'premium')
+                ->exists();
+
+            if ($basic) {
+                // return view('blog.add_blog');
+                return "Basic Status contains db tennat! " . tenant('id');
+            } 
+            
+            elseif ($standard) {
+                return "Sandard Status contains db tennat! " . tenant('id');
+            } 
+            
+            elseif($premium) {
+                return "Premium Status contains db tennat! " . tenant('id');
+            }
+            else {
+                return "Other Unknown Tenants Uer Tables Status with Tenant Id: " . tenant('id');
+            }
+        } 
+        
+        else {
+            return "No connection is made";
+        }
+
+        // return "Add Blog Method!";
+    }
+
+    public function postBlog(Request $request)
+    {
+        return "Add postBlog Method!";
+    }
+    public function editBlog(Request $request)
+    {
+        return "Add editBlog Method!";
+    }
+    public function deleteBlog(Request $request)
+    {
+        return "Add deleteBlog Method!";
+    }
+
+
+    // Others code
     public function subscription(Request $request)
     {
         return view('subscription');

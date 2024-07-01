@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Models\Tenant;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use App\Http\Controllers\Tenant\TenancyRegisterController;
@@ -10,19 +11,29 @@ use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 // config('tenancy.central_domains')[1];
 
-// All Tenants Route
-
+// All specific Tenants Route id
 Route::middleware([
     'web',
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
+   
+
+// Route::domain('sub domains name')->group(function () { }
 
 Route::get('/', function () {
     return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
+    // dd(tenant('id'));
 });
 
+Route::get('/add-blog', [TenancyRegisterController::class, 'addBlog'])->name('add.blog');
+Route::post('/post-blog', [TenancyRegisterController::class, 'postBlog'])->name('post.blog');
+Route::get('/edit-blog', [TenancyRegisterController::class, 'editBlog'])->name('edit.blog');
+Route::get('/delete-blog', [TenancyRegisterController::class, 'deleteBlog'])->name('delete.blog');
+
+
 });
+
 
 // Specific Tenants Route
 Route::middleware([

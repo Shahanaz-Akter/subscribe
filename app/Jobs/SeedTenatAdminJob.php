@@ -2,27 +2,24 @@
 
 namespace App\Jobs;
 
-// use App\Models\User;
 use App\Models\Tenant;
-// use Illuminate\Foundation\Auth\User;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Facades\Artisan;
 
 class SeedTenatAdminJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    /**
-     * Create a new job instance.
-     */
 
-     protected Tenant $tenant;
+    protected Tenant $tenant;
 
     public function __construct(Tenant $tenant)
     {
-        $this->tenant= $tenant;
+        $this->tenant = $tenant;
     }
 
     /**
@@ -30,15 +27,22 @@ class SeedTenatAdminJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $this->tenant->run(function(){
+        tenancy()->initialize($this->tenant);
 
-            User::create([
-                'name'=>$this->tenant->name,
-                'email'=>$this->tenant->email,
-                'password'=>$this->tenant->password,
-                'status'=>$this->tenant->status,
-            ]);
+        // Run tenant-specific migrations
+        Artisan::call('tenants:migrate', [
+            '--tenants' => [$this->tenant->id],
+        ]);
 
-        });
+        // Create a user in the tenant's database
+        User::create([
+            'company' => $this->tenant->company,
+            'name' => $this->tenant->name,
+            'email' => $this->tenant->email,
+            'password' => bcrypt($this->tenant->password),
+            'status' => $this->tenant->status,
+        ]);
+
+        tenancy()->end();
     }
 }
