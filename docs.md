@@ -99,6 +99,11 @@ Each Database and their table will be placed there after migration files.
 step-21: migration creating ---> php artisan make:migration create_users_table --path=database/migrations/tenant
 step-22: migartion commands for all tenants users table: php artisan tenants:migrate
 
+
+php artisan make:request StoreTenancyRegisterRequest 
+"use this like this= public function postRegister(StoreTenancyRegisterRequest $request)"
+
+php artisan make:job SeedTenatAdminJob
 <!-- install nvm pacakeg into your device. using terminal write following comnmands ->
 
 # List currently installed Node.js versions

@@ -35,8 +35,9 @@ Route::middleware('auth')->group(function () {
 
 
 // Super Admin can register each tenant using this route
-Route::get('/tenancy-register', [TenancyRegisterController::class, 'tenancyRegister'])->middleware(['auth', 'verified'])->name('tenancy-register');
-Route::post('/post-register', [TenancyRegisterController::class, 'postRegister'])->middleware(['auth', 'verified'])->name('post-register');
+Route::get('/tenancy-register', [TenancyRegisterController::class, 'tenancyRegister'])->middleware(['auth', 'verified'])->name('tenancy.register');
+Route::post('/post-register', [TenancyRegisterController::class, 'postRegister'])->middleware(['auth', 'verified'])->name('tenant-post.register');
+
 
 // Product subscription 
 Route::get('/subscription', [TenancyRegisterController::class, 'subscription'])->name('subscription');

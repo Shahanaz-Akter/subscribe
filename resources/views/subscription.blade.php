@@ -20,7 +20,7 @@
             <div>
                 <div class="mb-2">Basic</div>
                 <div class="mb-2">500 $</div>
-                <a type="button" class="btn btn-danger" href="{{ route('permission-subscription') }}">Subscription</a>
+                <a type="button" class="btn btn-danger" href=#">Subscription</a>
             </div>
             <div>Lorem ipsum dolor</div>
         </div>
@@ -29,7 +29,7 @@
             <div>
                 <div class="mb-2">Standard</div>
                 <div class="mb-2">1000 $</div>
-                <a type="button" class="btn btn-danger" href="{{ route('permission-subscription') }}">Subscription</a>
+                <a type="button" class="btn btn-danger" href=#">Subscription</a>
             </div>
             <div>Lorem ipsum dolor</div>
 
@@ -39,7 +39,7 @@
             <div>
                 <div class="mb-2">Premium</div>
                 <div class="mb-2">2000 $</div>
-                <a type="button" class="btn btn-danger" href="{{ route('permission-subscription') }}">Subscription</a>
+                <a type="button" class="btn btn-danger" href=#">Subscription</a>
             </div>
             <div>Lorem ipsum dolor</div>
         </div>

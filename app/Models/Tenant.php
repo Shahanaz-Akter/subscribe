@@ -10,5 +10,12 @@ use Stancl\Tenancy\Database\Concerns\HasDomains;
 class Tenant extends BaseTenant implements TenantWithDatabase
 {
     use HasDatabase, HasDomains;
+
+
+    public function setPasswordAttribute($value){
+
+     $this->attributes['password']=bcrypt($value);
+     
+    }
 }
 
