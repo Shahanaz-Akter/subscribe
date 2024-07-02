@@ -25,7 +25,7 @@ class TenancyRegisterController extends Controller
     }
     public function postRegister(StoreTenancyRegisterRequest $request)
     {
-        // dd($request->all());
+        dd($request->all());
 
         $tenant = Tenant::create($request->validated());
 

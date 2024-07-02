@@ -77,12 +77,33 @@
                 <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
             </div>
 
-            <div class="mb-2">
+            {{-- <div class="mb-2">
                 <x-input-label for="status" :value="__('Subscribe Plan')" />
                 <x-text-input id="status" class="block mt-1 w-full" type="text" name="status" :value="old('status')"
                     placeholder="basic / standard / premium" required autofocus autocomplete="status" />
                 <x-input-error :messages="$errors->get('status')" class="mt-2" />
+            </div> --}}
+
+
+            <style>
+                .border-grey {
+                    --tw-border-opacity: 1!important;
+                    border-color: rgb(209 213 219 / var(--tw-border-opacity))!important;
+                }
+            </style>
+
+            <div class="mb-2">
+                <x-input-label for="status" :value="__('Subscribe Plan')" />
+                <select id="status" name="status" class="border-grey rounded-md block mt-1 w-full" required autofocus
+                    autocomplete="status">
+                    <option value="" disabled selected>{{ __('Select a plan') }}</option>
+                    <option value="basic" {{ old('status') == 'basic' ? 'selected' : '' }}>Basic</option>
+                    <option value="standard" {{ old('status') == 'standard' ? 'selected' : '' }}>Standard</option>
+                    <option value="premium" {{ old('status') == 'premium' ? 'selected' : '' }}>Premium</option>
+                </select>
+                <x-input-error :messages="$errors->get('status')" class="mt-2" />
             </div>
+
 
             <div class="flex items-center justify-end mt-4">
                 {{-- <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -94,7 +115,7 @@
                     {{ __('Tenant Register') }}
                 </x-primary-button>
             </div>
-        </form>
+
     </x-guest-layout>
 
     <div class="d-flex justify-content-center align-items-center gap-4">
@@ -102,8 +123,8 @@
         <div style="border:1px solid black; margin-bottom: 10px;"class="p-4 text-center">
             <div>
                 <h2 class="mb-2 fw-bold" style="font-size: 20px;">Basic</h2>
-               <h3 class="mb-2">Capacity: 5 Blogs One Day</h3>
-                <div class="mb-2">Monthly Price:  500 $</div>
+                <h3 class="mb-2">Capacity: 5 Blogs One Day</h3>
+                <div class="mb-2">Monthly Price: 500 $</div>
                 <div class="mb-2">Subscribe Description</div>
             </div>
 
@@ -137,6 +158,7 @@
 
     </div>
 
+    </form>
 
 
 </body>

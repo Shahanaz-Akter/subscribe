@@ -18,8 +18,11 @@ Route::middleware([
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
 
-
     // Route::domain('sub domains name')->group(function () { }
+    Route::get('/dashboard', function () {
+        return "Current Tenants Dashboard  " . tenant('id');
+    });
+
 
     Route::get('/', function () {
         return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
