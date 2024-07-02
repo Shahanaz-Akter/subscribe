@@ -19,14 +19,14 @@
 
         <div>
 
-            <form method="POST" action="/post-edit-blog">
+            <form method="" action="/post-edit-blog/{{ $blog->id }}">
 
                 @csrf
                 <!-- Blog -->
                 <div class="mb-2">
                     <label class="form-label" for="blog">Blog Name</label>
                     <div>
-                        <input type="text" class="form-control" name="blog" value= 
+                        <input type="text" class="form-control" name="blog" value= {{ $blog->name }}
                             placeholder="abc" required autofocus autocomplete="blog">
                     </div>
                 </div>
@@ -36,9 +36,19 @@
                 <div class="mb-2">
                     <label class="form-label" for="blog">Blog Description</label>
 
-                    <textarea class="form-control" aria-label="With textarea" name="des"> </textarea>
+                    <textarea class="form-control" aria-label="With textarea" name="des"> {{ $blog->description }}</textarea>
                 </div>
 
+
+                <div class="mb-2">
+                    <label class="form-label" for="blog">Blog Status</label>
+                    <div>
+                        <input type="text" class="form-control" name="block_status" value= {{ $blog->tenant_status }}
+                            placeholder="block_status" required autofocus autocomplete="block_status">
+                    </div>
+                </div>
+
+                
 
                 <button class="btn btn-primary" type="submit">
                     {{ __('Submit') }}

@@ -35,7 +35,10 @@ class TenancyRegisterController extends Controller
     }
 
 
-    // addBlog postBlog editBlog deleteBlog
+
+
+
+    // For Each tenants addBlog postBlog editBlog deleteBlog
     public function addBlog(Request $request)
     {
         // Retrieve the tenant's database name
@@ -43,9 +46,9 @@ class TenancyRegisterController extends Controller
         $db_user = 'tenant' . $tenantId;
 
         config(['database.connections.tenant.database' => $db_user]);
+
         // Reconnect to the tenant's database
         DB::connection('tenant')->reconnect();
-
 
         if (DB::connection('tenant')->getPdo()) {
 
@@ -67,41 +70,152 @@ class TenancyRegisterController extends Controller
 
             if ($basic) {
                 // return view('blog.add_blog');
-                return "Basic Status contains db tennat! " . tenant('id');
-            } 
-            
-            elseif ($standard) {
-                return "Sandard Status contains db tennat! " . tenant('id');
-            } 
-            
-            elseif($premium) {
-                return "Premium Status contains db tennat! " . tenant('id');
-            }
-            else {
+                // return "Basic Status contains db tennat! " . tenant('id');
+                return view('blog.basic_add_blog');
+            } elseif ($standard) {
+                // return "Sandard Status contains db tennat! " . tenant('id');
+                return view('blog.basic_add_blog');
+            } elseif ($premium) {
+                // return "Premium Status contains db tennat! " . tenant('id');
+                return view('blog.basic_add_blog');
+            } else {
                 return "Other Unknown Tenants Uer Tables Status with Tenant Id: " . tenant('id');
             }
-        } 
-        
-        else {
+        } else {
             return "No connection is made";
         }
-
-        // return "Add Blog Method!";
     }
 
     public function postBlog(Request $request)
     {
-        return "Add postBlog Method!";
-    }
-    public function editBlog(Request $request)
-    {
-        return "Add editBlog Method!";
-    }
-    public function deleteBlog(Request $request)
-    {
-        return "Add deleteBlog Method!";
+        $tenantId = tenant('id');
+        $db_user = 'tenant' . $tenantId;
+
+        config(['database.connections.tenant.database' => $db_user]);
+        DB::connection('tenant')->reconnect();
+
+        if (DB::connection('tenant')->getPdo()) {
+
+            $basic = DB::connection('tenant')->table('users')->first();
+        }
+        // dd($basic );
+
+        $request->validate([
+            'blog' => 'required|string|max:255',
+            'des' => 'required|string',
+        ]);
+
+        $currentDate = Carbon::now()->toDateString();
+
+        $todayRecordCount = Blog::whereDate('created_at', $currentDate)->count();
+
+        // dd( $todayRecordCount);
+        // $basic->status;
+        // dd( $todayRecordCount );
+        if ($basic->status === 'basic') {
+            if ($todayRecordCount < 5) {
+
+                $blog = new Blog();
+                $blog->name = $request->blog;
+                $blog->description = $request->des;
+                $blog->tenant_status = 'basic';
+                $blog->save();
+
+                $blogs = Blog::all();
+
+                // return view('blog.show_basic_blogs', compact('blogs'));
+
+                // dd($blogs);
+                return redirect()->back()->with('blogs', $blogs)->with('msg', "Blogs successfully Created");
+            }
+            else {
+
+                return redirect()->back()->with('msg', "Limits are extended! You can post minimum 5 blogs per day.");
+            }
+        } 
+
+
+
+        if ($basic->status === 'standard') {
+            if ($todayRecordCount < 7) {
+
+                $blog = new Blog();
+                $blog->name = $request->blog;
+                $blog->description = $request->des;
+                $blog->tenant_status = 'standard';
+                $blog->save();
+    
+                $blogs = Blog::all();
+    
+                // return view('blog.show_basic_blogs', compact('blogs'));
+    
+                // dd($blogs);
+                return redirect()->back()->with('blogs', $blogs)->with('msg', "Blogs successfully Created");
+            }
+            else {
+
+                return redirect()->back()->with('msg', "Limits are extended! You can post  minimum of 7 blogs per day.");
+            }
+        }
+         
+
+        if ($basic->status == 'premium') {
+
+            $blog = new Blog();
+            $blog->name = $request->blog;
+            $blog->description = $request->des;
+            $blog->tenant_status = 'standard';
+            $blog->save();
+
+            $blogs = Blog::all();
+
+            // return view('blog.show_basic_blogs', compact('blogs'));
+
+            return redirect()->back()->with('blogs', $blogs)->with('msg', "Blogs successfully Created");
+        } 
+        
+       
     }
 
+
+    public function showBlog(Request $request)
+    {
+        $blogs = Blog::all();
+
+        return view('blog.show_basic_blogs', compact('blogs'));
+    }
+
+    public function editBlog(Request $request, $id)
+    {
+        $blog = Blog::find($id);
+        //  dd($blog);
+        return view('blog.update_blog', compact('blog'));
+    }
+
+    public function postEditBlog(Request $request, $id)
+    {
+        $blog = Blog::find($id);
+        // dd($blog);
+
+        if ($blog) {
+            $blog->name = $request->blog ?? $blog->blog;
+            $blog->description = $request->des ?? $blog->description;
+            $blog->tenant_status = $request->block_status ?? $blog->tenant_status;
+
+            $blog->save();
+
+            return redirect()->back();
+        }
+        return view('blog.update_blog', compact('blog'));
+    }
+
+    public function deleteBlog(Request $request, $id)
+    {
+        $blog = Blog::find($id);
+        $blog->delete();
+
+        return redirect()->back();
+    }
 
     // Others code
     public function subscription(Request $request)

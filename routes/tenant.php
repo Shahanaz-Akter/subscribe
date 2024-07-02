@@ -17,21 +17,23 @@ Route::middleware([
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
-   
-
-// Route::domain('sub domains name')->group(function () { }
-
-Route::get('/', function () {
-    return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
-    // dd(tenant('id'));
-});
-
-Route::get('/add-blog', [TenancyRegisterController::class, 'addBlog'])->name('add.blog');
-Route::post('/post-blog', [TenancyRegisterController::class, 'postBlog'])->name('post.blog');
-Route::get('/edit-blog', [TenancyRegisterController::class, 'editBlog'])->name('edit.blog');
-Route::get('/delete-blog', [TenancyRegisterController::class, 'deleteBlog'])->name('delete.blog');
 
 
+    // Route::domain('sub domains name')->group(function () { }
+
+    Route::get('/', function () {
+        return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
+        // dd(tenant('id'));
+    });
+
+    Route::get('/add-blog', [TenancyRegisterController::class, 'addBlog'])->name('add.blog');
+    Route::post('/post-blog', [TenancyRegisterController::class, 'postBlog'])->name('post.blog');
+    Route::get('/show-blogs', [TenancyRegisterController::class, 'showBlog'])->name('show.blog');
+
+    Route::get('/edit-blog/{id}', [TenancyRegisterController::class, 'editBlog'])->name('edit.blog');
+    Route::get('/post-edit-blog/{id}', [TenancyRegisterController::class, 'postEditBlog'])->name('post.edit.blog');
+
+    Route::get('/delete-blog/{id}', [TenancyRegisterController::class, 'deleteBlog'])->name('delete.blog');
 });
 
 
@@ -66,7 +68,6 @@ Route::middleware([
         Route::get('/abc/blog_edit/{id}', [TenancyRegisterController::class, 'abcBlogEdit'])->name('abc/blog_edit');
         Route::post('/abc/post_abc_blog/{id}', [TenancyRegisterController::class, 'postAbcBlog'])->name('abc/post_abc_blog');
         Route::get('/abc/blog_delete/{id}', [TenancyRegisterController::class, 'abcBlogDelete'])->name('abc/blog_delete');
-
     });
 
     Route::domain('mimi.localhost')->group(function () {
@@ -93,6 +94,5 @@ Route::middleware([
         Route::post('/mimi/post_mimi_blog/{id}', [TenancyRegisterController::class, 'postMimiBlog'])->name('post_mimi_blog');
         Route::post('/mimi/post_mimi_product/{id}', [TenancyRegisterController::class, 'postMimiproduct'])->name('post_mimi_product');
         Route::get('/mimi/product_delete/{id}', [TenancyRegisterController::class, 'mimiProductDelete'])->name('product_delete');
-
     });
 });

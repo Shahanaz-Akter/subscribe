@@ -80,7 +80,7 @@
             <div class="mb-2">
                 <x-input-label for="status" :value="__('Subscribe Plan')" />
                 <x-text-input id="status" class="block mt-1 w-full" type="text" name="status" :value="old('status')"
-                    placeholder="Basic / Standard / premium" required autofocus autocomplete="status" />
+                    placeholder="basic / standard / premium" required autofocus autocomplete="status" />
                 <x-input-error :messages="$errors->get('status')" class="mt-2" />
             </div>
 

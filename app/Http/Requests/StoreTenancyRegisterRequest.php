@@ -34,13 +34,26 @@ class StoreTenancyRegisterRequest extends FormRequest
         ];
     }
 
+    // public function prepareForValidation()
+    // {
+
+    //     $this->merge([
+
+    //         'domain' => $this->domain . "." . config('tenancy.central_domains')[1]
+
+    //     ]);
+    // }
+
     public function prepareForValidation()
     {
-
         $this->merge([
-
-            'domain' => $this->domain . "." . config('tenancy.central_domains')[1]
-
+            'domain' => strtolower($this->domain) . "." . config('tenancy.central_domains')[1],
+            'company' => strtolower($this->company),
+            'name' => strtolower($this->name),
+            'email' => strtolower($this->email),
+            'status' => strtolower($this->status),
         ]);
     }
+
+
 }

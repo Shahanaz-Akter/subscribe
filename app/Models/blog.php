@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class blog extends Model
 {
     use HasFactory;
+
+   
+    protected $fillable = ['name', 'description', 'tenant_status'];
 }

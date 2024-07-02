@@ -94,6 +94,24 @@ return [
         ],
 
 
+        'central' => [
+            'central' => [
+                'driver' => 'mysql',
+                'host' => env('CENTRAL_DB_HOST', '127.0.0.1'),
+                'port' => env('CENTRAL_DB_PORT', '3306'),
+                'database' => env('CENTRAL_DB_DATABASE', 'forge'),
+                'username' => env('CENTRAL_DB_USERNAME', 'forge'),
+                'password' => env('CENTRAL_DB_PASSWORD', ''),
+                'unix_socket' => env('CENTRAL_DB_SOCKET', ''),
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
+                'prefix' => '',
+                'strict' => true,
+                'engine' => null,
+            ],
+        ],
+
+
         // dynamically will be set db connection for each tennat db
         'tenant' => [
             'driver' => 'mysql',
